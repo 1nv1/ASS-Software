@@ -66,7 +66,7 @@ function conv_dis_ani(x, zx, h, zh, span, duration, delay)
 	  usleep(tani);
 	else
 	  figure(1);
-	  usleep(200000);
+	  ##usleep(200000);
 	  waitforbuttonpress();
 	endif
 	end
