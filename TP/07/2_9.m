@@ -9,6 +9,6 @@ for z = 0.5:0.5:3;
     fzB = ((z).^(n))./((2).^(n+2));
     fzC = -((z).^(n))./((3).^(n+2));
     fz = sum(fzA) + sum(fzB) + sum(fzC);
-    printf("La serie de la funcion en z = %f resulta en %f con %u elementos\n", z, fz, j);
+    printf("La suma parcial de la serie en z = %f resulta en %f con %u elementos\n", z, fz, j);
   end
 end
