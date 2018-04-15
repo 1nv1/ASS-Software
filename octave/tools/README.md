@@ -94,5 +94,5 @@ dt = 0.1; % 100[ms]
 t = 0:dt:(2*pi);
 A = sin(t);
 B = cos(t);
-plot(conv(A, B));
+plot(dt .* conv(A, B));
 ```

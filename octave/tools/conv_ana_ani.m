@@ -69,7 +69,7 @@ for i = 0:inc:(span + inc);
 	    elseif((i + 1 >= initAni) && (i + 1 <= endAni))
         for j=1:inc
           temph = shift(temph, 1);
-	        convtot = tempx .* temph;
+	        convtot = dt .* tempx .* temph;
           addSignals(1, idTotal) = sum(convtot);
 	        idTotal++;
         endfor
