@@ -1,5 +1,14 @@
 # Funciones útiles
 
+## Utilización
+
+Para poder utilizar las funciones aquí presentes, se requiere o bien agregar el
+_path_ (directorio) al _path_ de **Octave** para poder ejecutarse o bien si se
+posicionan directamente en el directorio, podrán utilizar las funciones.
+Un interesante punto de inicio para quienes no saben de **Octave** es el
+siguiente [wikibook](https://en.wikibooks.org/wiki/Octave_Programming_Tutorial/Getting_started),
+hay información de como poder correr _scripts_, siempre desde la CLI.
+
 ## Animación
 
 ### Convolución en tiempo discreto
