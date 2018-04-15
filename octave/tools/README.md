@@ -73,7 +73,7 @@ t = 0:dt:(2*pi);
 A = sin(t);
 B = cos(t);
 % Asumimos que las señales comienzan en el instante 0 (cero)
-conv_ana_ani(A, 0, B, 0);
+conv_ana_ani(A, 0, B, 0, dt);
 ```
 
 La comprobación se puede hacer como sigue:
