@@ -1,5 +1,6 @@
-% Make a convolution animation
-function conv_dis_ani(x, zx, h, zh, span, duration, delay)
+                                % Make a convolution animation
+function conv_dis_ani(x, zx, h, zh, duration = 5, delay = 0)
+  graphics_toolkit("gnuplot");
   lx = length(x);
   lh = length(h);
   if((zx<0)||(zx>lx))
@@ -10,13 +11,14 @@ function conv_dis_ani(x, zx, h, zh, span, duration, delay)
     disp("Error! Element zero of H is out of range.")
     return
   endif
-  if(span < (lx+(2*lh)))
-    disp("Error! span argument must be greater than length(x) + 2* length(h)")
+  %% Span calculation
+  span = (lx * 2 + (2 * lh));
+  if(duration < 0)
+    disp("Error! Duration must be greater than 0.")
     return
   endif
-  if(duration>0)
-    tani = round((duration*1e6)/span);
-  endif
+  tmpConv = conv(x, h);
+  tani = round(duration/span);
   rang = round(-span/2):round(span/2);
   tempx = x;
   temph = h;
@@ -29,47 +31,54 @@ function conv_dis_ani(x, zx, h, zh, span, duration, delay)
   x(numel(rang)) = 0;
   h(numel(rang)) = 0;
   swap = 0;
+  %% Initial delay, 0 by default
   sleep(delay);
-  initI = round(span/2)-zx-lh+1;
-  endI = round(span/2)+(lx-zx);
+  initI = round(span / 2) - zx - zh;
+  endI = round(span / 2) + lx + lh - zx - zh - 1;
+  initAni = round(span / 2) - lx + zx;
+  endAni = round(span / 2) + lh - zh + zx + 1;
   idTotal = 1;
   addSignals = zeros(1, length(rang));
-  figure(1); clf;
-  for i = 0:span+1;
-	try;
-	figure(1);
-	hold on;
-	subplot(2,1,1);
-	cla;
-	pa = stem(rang.+(round(span/2)-zx), x, "color", "r", "linewidth", 5);
-	pb = stem(rang.+i, h, "color", "b", "linewidth", 5);
-	axis([round(-span/2),round(span/2),min([min(x),min(h)]),max([max(x),max(h)])]);
-	hold off;
-	if(i==1)
-	  subplot(2,1,2);
-	  stem(rang, zeros(1, numel(rang)));
-	  axis([round(-span/2),round(span/2),min([min(x),min(h)]),max([max(x),max(h)])]);
-	endif
-	if((i>=initI)&&(i<=endI))
-	  temph = shift(temph,1);
-	  convtot = tempx .* temph;
-	  addSignals(1,idTotal) = sum(convtot);
-	  idTotal++;
-	  hold on;
-	  subplot(2,1,2);
-	  cla;
-	  stem(rang, shift(addSignals,initI+zx), "color", "g", "linewidth", 5);
-	  axis([round(-span/2),round(span/2),min(addSignals),max(addSignals)]);
-	  hold off;
-	endif
-	if(duration>0)
-	  usleep(tani);
-	else
-	  figure(1);
-	  ##usleep(200000);
-	  waitforbuttonpress();
-	endif
-	end
+  %% Chart clean
+  figure(1);
+  clf;
+  %% Axis configuration for plots interaction
+  axisA = [round(-span / 2), round(span/2), floor(min([min(x),min(h)]) / 5) * 5, ceil(max([max(x),max(h)]) / 5) * 5];
+  %% We can get the second axis configuration directly
+  axisB = [round(-span / 2), round(span / 2), floor(min(tmpConv) / 5) * 5, ceil(max(tmpConv) / 5) * 5];
+for i = 0:(span + 1);
+    try;
+      %% Work on signal and system interaction
+	    figure(1);
+	    hold on;
+	    subplot(2, 1, 1);
+	    cla;
+	    pa = stem(rang .+ (round(span / 2) - zx), x, "color", "r", "linewidth", 5, "marker", ".");
+	    pb = stem(rang .+ i, h, "color", "b", "linewidth", 5, "marker", ".");
+	    axis(axisA);
+      grid on;
+	    hold off;
+      %% Work on convolution animation
+	    if (i == 1)
+	      subplot(2, 1, 2);
+	      stem(rang, zeros(1, numel(rang)), "marker", ".");
+	      axis(axisB);
+        grid on;
+	    elseif((i + 1 >= initAni) && (i + 1 <= endAni))
+        temph = shift(temph, 1);
+	      convtot = tempx .* temph;
+        addSignals(1, idTotal) = sum(convtot);
+	      idTotal++;
+	      hold on;
+	      subplot(2, 1, 2);
+	      cla;
+	      stem(rang, shift(addSignals, initI + zx), "color", "g", "linewidth", 5, "marker", ".");
+	      %%axis(axisB);
+        grid on;
+	      hold off;
+	    endif
+      %% Little sleep for better plot performance and animation
+      pause(tani);
+	  end
   endfor
-  hold off;
 endfunction
