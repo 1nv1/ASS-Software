@@ -1,4 +1,3 @@
-                                % Make a convolution animation
 function conv_dis_ani(x, zx, h, zh, duration = 5, delay = 0)
   graphics_toolkit("gnuplot");
   lx = length(x);
