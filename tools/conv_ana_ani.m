@@ -33,7 +33,7 @@ function conv_ana_ani(x, zx, h, zh, dt, duration = 5, delay = 0)
   h(numel(rang)) = 0;
   swap = 0;
   %% Initial delay, 0 by default
-  sleep(delay);
+  pause(delay);
   initI = round(span / 2) - zx - zh;
   endI = round(span / 2) + lx + lh - zx - zh - 1;
   initAni = round(span / 2) - lx + zx;
