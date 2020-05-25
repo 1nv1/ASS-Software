@@ -41,6 +41,9 @@ Para una comprobación rápida, se puede usar la versión _one line_:
 dt=0.01; t=0:dt:(2*pi); A=sin(t); B=cos(t); convAniCont(A, 0, B, 0, dt);
 ```
 
+Puede acceder a un video donde se muestra el funcionamiento de la función en el
+siguiente [link](https://youtu.be/Xh8YLXm3QfI).
+
 La comprobación se puede hacer como sigue:
 
 ```octave
