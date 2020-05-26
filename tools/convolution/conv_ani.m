@@ -46,9 +46,9 @@ function conv_ani(fx, zx, fh, zh, dt = 0.5, duration = 5, delay = 0)
   fh = fliplr(fh);
 
   if (dt == 1)
-    initI = hspan - zx - zh - (round(cion / dt) * 2);
-  else
     initI = hspan - zx - zh - (cion * 2);
+  else
+    initI = hspan - zx - zh - (round(cion / dt) * 2);
   end
   endI = hspan + len_x + len_h - zx - zh - 1;
   initAni = hspan - len_x - zx + 1;
