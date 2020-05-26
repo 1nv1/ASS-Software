@@ -16,7 +16,7 @@ que las dos señales interactúan, se multiplica y la integral nos da el valor
 instantáneo de **Y**.
 
 En la parte superior se verá la interacción e iteración entre las señales **X**
-e **Y** y en la parte inferior se puede observar la señal **Y** generada, la
+e **H** y en la parte inferior se puede observar la señal **Y** generada, la
 convolución.
 
 ## Parámetros
@@ -25,9 +25,9 @@ A continuación los parámetros que requiere:
 
 Obligatorios
 
-1. Vector con la señal A
+1. Vector con la señal **X**
 2. Indicador de la posición del índice cero de la señal
-3. Vector con la señal B
+3. Vector con la señal **H**
 4. Indicador de la posición del índice cero de la señal
 5. Delta de tiempo ¡Sí es **1** se hace la convolución discreta!
 
@@ -78,7 +78,7 @@ Se puede ver la animación en el siguiente [video](https://youtu.be/NIH-_wS3ZSE)
 ### Número 2
 
 El siguiente es un ejemplo donde **X** es una señal constante de 4 segundos con
-amplitud constante igual a 1 e **Y** es una señal rampa de duración de 4
+amplitud constante igual a 1 y **H** que es una señal rampa de duración de 4
 segundos.
 
 ```octave
