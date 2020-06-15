@@ -6,7 +6,7 @@ El script *draw_line.m* recibe como parámetros dos puntos del plano complejo y 
 Por ejemplo:
 
 ```octave
-draw_line(draw_line(10+1i, -2-4i);
+draw_line(1+2i, -2-1i);
 ```
 
 ![alt text](https://github.com/1nv1/ASS-Software/blob/master/tools/z/img/draw_line.svg)
