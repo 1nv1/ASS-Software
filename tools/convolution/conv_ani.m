@@ -79,12 +79,12 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   t = win.t.f;
   f = [zeros(1, win.half - x.z) x.f zeros(1, win.t.len - x.len - (win.half - x.z) - (win.cor > 0))];
   if (dt == 1)
-    pSgs(1) = stem(win.t.f, x.f, 'linewidth', 4, 'color', 'red');
-    pSgs(2) = stem(nan, nan, 'linewidth', 4, 'color', 'blue');
+    pSgs(1) = stem(t, f, 'linewidth', 4, 'color', 'red');
+    pSgs(2) = stem(t, f, 'linewidth', 4, 'color', 'blue');
   else
     pSgs(1) = area(t, f, "FaceColor", "red");
     set(get(pSgs(1), 'children'), 'facealpha', 0.5);
-    pSgs(2) = area(win.t.f, x.f, "FaceColor", "blue");
+    pSgs(2) = area(f, f, "FaceColor", "blue");
     set(get(pSgs(2), 'children'), 'facealpha', 0.5);
   end
   win.s.min = floor(min([min(fx),min(fh)]));
