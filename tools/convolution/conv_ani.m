@@ -39,16 +39,6 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   figure(1);
   clf;
 
-  %% Window calculation
-  win.len = ((x.len + h.len) * 2) + 1;
-  %% Window half
-  win.half = round(win.len / 2);
-  win.cor = 0;
-  if (mod(win.len, 2))
-    win.cor = round(1 / dt);
-    win.half = win.half - 1;
-  endif
-
   %% Original convolution
   conv.original = conv(fx, fh) .* dt;
   conv.len = length(conv.original);
@@ -57,9 +47,19 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   [h.f, h.z, h.len] = cleanSignal(fh, zh);
   h.f = flip(h.f);
   
+  conv.z = x.z + h.z;
   %% Where is the zero of convolution?
-  conv.z = win.half - x.z - h.z;
-  [conv.f, conv.z, conv.len] = cleanSignal(conv.original, conv.z);
+  [conv.f, temp, conv.len] = cleanSignal(conv.original, conv.z);
+  
+    %% Window calculation
+  win.len = ((x.len + h.len) * 2) + 1;
+  %% Window half
+  win.half = round(win.len / 2);
+  win.cor = 0;
+  if (mod(win.len, 2))
+    win.cor = round(1 / dt);
+    win.half = win.half - 1;
+  endif
   
   %% Discrete time animation
   ani.dt = round(duration/win.len);
@@ -118,7 +118,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   ani.idTotal = 0;
 
   %% Graph until H touch the end of screen
-  for i = 1:(win.t.len - h.len);
+  for i = 1:(win.t.len - h.len - 1);
     %% h(t)
     t = win.t.f;
     f = [zeros(1, i) h.f zeros(1, win.t.len - (h.len + i + (win.cor > 0)))];
@@ -130,7 +130,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
         conv.parcial = conv.f(1:ani.idTotal);
       endif
       t = win.t.f;
-      f = [zeros(1, conv.z) conv.parcial zeros(1, win.t.len - (conv.z + ani.idTotal))];
+      f = [zeros(1, win.half - conv.z) conv.parcial zeros(1, win.t.len - (win.half - conv.z + ani.idTotal))];
       set(pConv(1),'XData', t, 'YData', f)
     endif
     %% Animation
