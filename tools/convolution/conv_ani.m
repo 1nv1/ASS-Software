@@ -7,12 +7,13 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
     res = j;
   endfunction
 
-  function [rf, rz] = cleanSignal(f, z)
+  function [rf, rz, rlen] = cleanSignal(f, z)
     len = length(f);
     i = getIdx(f, 1, 1, len);
     q = getIdx(f, len, -1, 1);
     rf = f(i:q);
     rz = z - i;
+    rlen = q - i;
   endfunction
 
   %% graphics_toolkit("gnuplot");
@@ -44,7 +45,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   win.half = round(win.len / 2);
   win.cor = 0;
   if (mod(win.len, 2))
-    win.cor = 1;
+    win.cor = round(1 / dt);
     win.half = win.half - 1;
   endif
 
@@ -52,34 +53,36 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   conv.original = conv(fx, fh) .* dt;
   conv.len = length(conv.original);
 
-  [x.f, x.z] = cleanSignal(fx, zx);
-  [h.f, h.z] = cleanSignal(fh, zh);
+  [x.f, x.z, x.len] = cleanSignal(fx, zx);
+  [h.f, h.z, h.len] = cleanSignal(fh, zh);
   h.f = flip(h.f);
   
   %% Where is the zero of convolution?
   conv.z = win.half - x.z - h.z;
-
+  [conv.f, conv.z, conv.len] = cleanSignal(conv.original, conv.z);
+  
   %% Discrete time animation
-  ani.dt = (duration/win.len);
+  ani.dt = round(duration/win.len);
   ani.delay = delay;
 
   %% Final range
   win.t.f = -win.half:win.half;
-  win.t.len = length(win.t);
+  win.t.len = length(win.t.f);
   
   %% Animation
-  ani.start = win.half - x.z - h.len + win.cor;
+  ani.start = win.half - x.z - h.len - (win.cor > 0);
   ani.finish = win.len - h.len;
 
   %% Get handlers
   subplot(2, 1, 1);
   hold on;
-  x.f = [zeros(1, win.half - x.z) x.f zeros(1, win.len - (win.half + x.len - x.z))];
+  t = win.t.f;
+  f = [zeros(1, win.half - x.z) x.f zeros(1, win.t.len - x.len - (win.half - x.z) - (win.cor > 0))];
   if (dt == 1)
     pSgs(1) = stem(win.t.f, x.f, 'linewidth', 4, 'color', 'red');
     pSgs(2) = stem(nan, nan, 'linewidth', 4, 'color', 'blue');
   else
-    pSgs(1) = area(win.t.f, x.f, "FaceColor", "red");
+    pSgs(1) = area(t, f, "FaceColor", "red");
     set(get(pSgs(1), 'children'), 'facealpha', 0.5);
     pSgs(2) = area(win.t.f, x.f, "FaceColor", "blue");
     set(get(pSgs(2), 'children'), 'facealpha', 0.5);
@@ -112,22 +115,23 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
 
   %% Initial delay, 1 sec. by default
   pause(ani.delay);
-  ani.idTotal = 1;
+  ani.idTotal = 0;
 
   %% Graph until H touch the end of screen
-  for i = 1:(win.len - h.len);
+  for i = 1:(win.t.len - h.len);
     %% h(t)
     t = win.t.f;
-    f = [zeros(1, i) h.f zeros(1, win.len - h.len - i)];
+    f = [zeros(1, i) h.f zeros(1, win.t.len - (h.len + i + (win.cor > 0)))];
     set(pSgs(2), 'XData', t, 'YData', f);
     %% y(t)
-	  if ((i >= ani.start) && (i <= win.len))
+	  if (i >= ani.start)
       if (ani.idTotal <= conv.len)
-        addSignals(1, ani.idTotal) = conv.original(1, ani.idTotal);
-	      ani.idTotal++;
-        y = [zeros(1, conv.z) addSignals zeros(1, win.len - (win.half - conv.z - conv.len) - i)];
-        set(pConv(1),'XData', win.t.f, 'YData', y)
+        ani.idTotal++;
+        conv.parcial = conv.f(1:ani.idTotal);
       endif
+      t = win.t.f;
+      f = [zeros(1, conv.z) conv.parcial zeros(1, win.t.len - (conv.z + ani.idTotal))];
+      set(pConv(1),'XData', t, 'YData', f)
     endif
     %% Animation
     drawnow();
