@@ -62,7 +62,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   endif
   
   %% Discrete time animation
-  ani.dt = round(duration/win.len);
+  ani.dt = duration / win.len;
   ani.delay = delay;
 
   %% Final range
