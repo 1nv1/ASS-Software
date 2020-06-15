@@ -100,4 +100,4 @@ Para una comprobación rápida, se puede usar la versión _one line_:
 dt=0.05; t=0:dt:4; X=ones(1,length(t)); H=t; conv_ani(X, round(length(X)/2), H, round(length(H)/2), dt);
 ```
 
-Se puede ver la animación en el siguiente [video](https://youtu.be/ky1QegQ7UG4).
+Se puede ver la animación en el siguiente [video](https://youtu.be/3bBMsifYsv0).
