@@ -70,7 +70,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
   win.t.len = length(win.t.f);
   
   %% Animation
-  ani.start = win.half - x.z - h.len - (win.cor > 0);
+  ani.start = win.half - x.z - h.len;
   ani.finish = win.len - h.len;
 
   %% Get handlers
