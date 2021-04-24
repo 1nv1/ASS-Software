@@ -35,10 +35,10 @@ function draw_line(a, b)
     yy = linspace(y.min, y.max, 100);
     plot(xx, yy, 'linewidth', 4, 'color', 'green');
   else
-    plot(line.x, line.y, 'linewidth', 4, 'color', 'green');
+    plot(line.x, line.y, 'linewidth', 2, 'color', 'black');
   endif
-  text(z1.x + p.d, z1.y + p.d, strcat('\fontsize{24}a'));
-  text(z2.x + p.d, z2.y + p.d, strcat('\fontsize{24}b'));
+  text(z1.x + p.d, z1.y + p.d, strcat('\fontsize{24}z - (', num2str(z1.x), ' + j', num2str(z1.y), ')'));
+  text(z2.x + p.d, z2.y + p.d, strcat('\fontsize{24}z - (', num2str(z2.x), ' + j', num2str(z2.y), ')'));
   axis([x.min, x.max, y.min, y.max]);
   xlabel(strcat('\fontsize{18}Re'));
   ylabel(strcat('\fontsize{18}Im'));
@@ -55,5 +55,6 @@ function draw_line(a, b)
     circsy = r .* sin(t) + z2.y;
     plot(circsx, circsy, '--', 'linewidth', 1, 'color', 'blue');
   endfor
+  title(strcat('\fontsize{24}| z - (', num2str(z1.x), ' + j', num2str(z1.y), ') | = | z - (', num2str(z1.x), ' + j', num2str(z1.y), ') |'));
   hold off;
 endfunction
