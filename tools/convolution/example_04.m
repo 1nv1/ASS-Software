@@ -5,4 +5,4 @@ ang = 2.*pi.*t;
 X = sin(ang);
 %% Signal H
 H = ones(1, length(ang));
-conv_ani(X, 1, H, 1, dt);
+conv_ani(X, 1, H, 1, dt,5);

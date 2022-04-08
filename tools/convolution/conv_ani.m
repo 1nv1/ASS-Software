@@ -133,7 +133,7 @@ function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
         conv.parcial = conv.f(1:ani.idTotal);
       endif
       t = win.t.f;
-      f = [zeros(1, win.half - conv.z) conv.parcial zeros(1, win.t.len - (win.half - conv.z + ani.idTotal))];
+      f = [zeros(1, round(win.half - conv.z)) conv.parcial zeros(1, round(win.t.len - (win.half - conv.z + ani.idTotal)))];
       set(pConv(1),'XData', t, 'YData', f)
     endif
     %% Animation

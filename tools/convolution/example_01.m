@@ -7,4 +7,4 @@ X = ones(1, length(t));
 % La señal H
 H = X;
 % Asumimos que las señales comienzan en el instante 0 (cero)
-conv_ani(X, round(length(X)/2), H, round(length(H)/2), dt);
+conv_ani(X, round(length(X)/2), H, round(length(H)/2), dt, 5);
