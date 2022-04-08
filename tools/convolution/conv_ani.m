@@ -1,5 +1,8 @@
 function conv_ani(fx, zx, fh, zh, dt = 1, duration = 5, delay = 1)
 
+  %zx = round(zx);
+  %fh = round(fh);
+
   function res = getIdx(f, i, dt, q)
     for j=i:dt:q
       if !(f(j) == 0) break; endif
